@@ -1,4 +1,3 @@
-//
 //select html element
 const addMatch = document.querySelector(".lws-addMatch");
 const allMatches = document.querySelector(".all-matches");
@@ -23,7 +22,8 @@ const DECREMENT = "score/decrement";
 const ADDCOUTNER = "score/counter";
 const DELETE = "score/delete";
 const RESET = "score/reset";
-// initialsta create
+
+// initialStates
 const initialStates = [
   {
     id: 0,
@@ -31,7 +31,7 @@ const initialStates = [
   },
 ];
 
-//create reducer
+//Create reducer
 const scoreReducer = (states = initialStates, action) => {
   switch (action.type) {
     case ADDCOUTNER:
@@ -65,8 +65,8 @@ const scoreReducer = (states = initialStates, action) => {
       if (allMatches.contains(action.payload.match)) {
         allMatches.removeChild(action.payload.match);
         numberingMatch();
+        return states.filter((state) => state.id !== action.payload.id);
       }
-      return states.filter((state) => state.id !== action.payload.id);
 
     case RESET:
       return states.map((state) => {
@@ -77,7 +77,7 @@ const scoreReducer = (states = initialStates, action) => {
   }
 };
 
-//create action
+//Create actions
 const increment = (id, value) => {
   return {
     type: INCREMENT,
@@ -120,7 +120,7 @@ const reset = () => {
   };
 };
 
-// Increment
+// Increment function
 function selectIncreInputs(matchID = 0) {
   const incrementForm = [...document.querySelectorAll(".incrementForm")];
   incrementForm.map((form) => {
@@ -132,7 +132,7 @@ function selectIncreInputs(matchID = 0) {
     });
   });
 }
-// Decrement
+// Decrement function
 function selectDecreInputs(matchID = 0) {
   const decrementForm = [...document.querySelectorAll(".decrementForm")];
   decrementForm.map((form) => {
@@ -155,14 +155,15 @@ function selectDelete() {
   });
 }
 
-// create store
+// Create store
 const store = Redux.createStore(scoreReducer);
 const render = () => {
   const states = store.getState();
   const results = [...document.querySelectorAll(".lws-singleResult")];
   results.map((result, index) => {
-    if (states[index].value !== undefined)
-      result.innerHTML = `${states[index].value}`;
+    result.innerHTML = `${
+      states[index] !== undefined ? states[index].value : 0
+    }`;
   });
 };
 
